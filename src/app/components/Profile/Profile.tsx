@@ -1,22 +1,45 @@
 
 import { GitHubUser } from "../../types";
 import Image from "next/image";
+import axios from "axios";
+import { useQuery } from "react-query";
+import ProfileHeader from "./ProfileHeader";
 
 interface ProfileProps {
-    user: GitHubUser | null;
-    }
+    name: string;
+}
 
 export default function Profile(
-    { user }: ProfileProps
+    { name }: ProfileProps
 ) {
+
+  const { data, isLoading, isError } = useQuery("user", async () => {
+    const response = await axios.get(`https://api.github.com/users/${name}`);
+    return response.data;
+  },{
+    enabled: !!name,
+  });
+
+  const user = data as GitHubUser;
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error</p>;
+  }
+
   return (
-    <section className="profile">
-      {user && (
-        <div className="flex flex-col items-center">
-          <h2>{user.name}</h2>
-          <p>{user.bio}</p>
-        </div>
-      )}
+    <section id="profile-container" className="bg-olive-drab">
+      <ProfileHeader
+        userMainData={{
+          avatar_url: user.avatar_url,
+          location: user.location,
+          followers: user.followers,
+          following: user.following
+        }}
+      />
     </section>
   );
 }

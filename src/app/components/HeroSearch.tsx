@@ -2,23 +2,34 @@
 
 import { FormEvent } from "react";
 import { GitHubUser } from "../types";
+import { useQueryClient } from "react-query";
+import axios from "axios";
 
 interface HeroSearchProps {
     setUser: (user: GitHubUser) => void;
 }
 
 export default function HeroSearch({ setUser }: HeroSearchProps){
+    const queryClient = useQueryClient();
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const name = formData.get("name") as string;
 
-    const response = await fetch(`https://api.github.com/users/${name}`);
-    const data = await response.json();
+    try {
+      const response = await axios.get(`https://api.github.com/users/${name}`);
+      const data = response.data;
 
-    console.log(data);
-    setUser(data);
+      // Use React Query to cache the data
+      queryClient.setQueryData("user", data);
+
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      // Handle error appropriately, e.g., display an error message to the user
+    }
   }
 
   return (
