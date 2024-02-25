@@ -23,14 +23,14 @@ export default function ProfileHeader({
     console.info("avatar_url -> ", avatar_url)
 
     return (
-        <section id="profile-header" className="w-full flex justify-center gap-9 relative py-8 max-w[11100px] mx-auto">
-            <div className="bg-olive-drab p-2 rounded-md absolute left-0 top-[-45px]">
+        <div id="profile-header" className="w-full flex justify-center gap-9 relative py-8">
+            <div className="bg-olive-drab p-3 rounded-2xl absolute left-0 top-[-45px]">
                 <Image
                     src={avatar_url}
                     alt="User avatar"
-                    width={100}
-                    height={100}
-                    className="rounded-s-md"
+                    width={120}
+                    height={120}
+                    className="rounded-2xl"
                 />
             </div>
             <div className="flex gap-5 items-center">
@@ -38,6 +38,6 @@ export default function ProfileHeader({
                 <ProfileCard name="Followers" value={followers} />
                 <ProfileCard name="Following" value={following} />
             </div>
-        </section>
+        </div>
     );
 }

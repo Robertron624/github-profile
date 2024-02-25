@@ -31,15 +31,23 @@ export default function Profile(
   }
 
   return (
-    <section id="profile-container" className="bg-olive-drab">
-      <ProfileHeader
-        userMainData={{
-          avatar_url: user.avatar_url,
-          location: user.location,
-          followers: user.followers,
-          following: user.following
-        }}
-      />
+    <section id="profile-container" className="bg-olive-drab w-full">
+      <div className="max-w-[1100px] mx-auto">
+        <ProfileHeader
+          userMainData={{
+            avatar_url: user.avatar_url,
+            location: user.location,
+            followers: user.followers,
+            following: user.following
+          }}
+        />
+        <p className="text-4xl mb-6">
+          {user.name}
+        </p>
+        <p className="text-lg text-columbia-blue">
+          {user.bio}
+        </p>
+      </div>
     </section>
   );
 }
