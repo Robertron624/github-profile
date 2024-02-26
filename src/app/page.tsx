@@ -1,31 +1,49 @@
 "use client";
 import HeroSearch from "./components/HeroSearch";
 import { useEffect, useState } from "react";
-import { GitHubUser } from "./types";
-
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import axios from "axios";
+import { GitHubRepository, GitHubUser } from "./types";
 import Profile from "./components/Profile/Profile";
-
-export const queryClient = new QueryClient();
+import axios from "axios";
 
 
 export default function Home() {
 
   const [name, setName] = useState("github");
-  
-  function setUser(user: GitHubUser) {
-    setName(user.login);
+
+  const [user, setUser] = useState<GitHubUser | null>(null);
+  const [repos, setRepos] = useState<GitHubRepository[] | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`https://api.github.com/users/${name}`);
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        // Handle error appropriately, e.g., display an error message to the user
+      }
+    };
+
+    const fetchRepos = async () => {
+      try {
+        const response = await axios.get(`https://api.github.com/users/${name}/repos`);
+        setRepos(response.data);
+      } catch (error) {
+        console.error("Error fetching user repos:", error);
+        // Handle error appropriately, e.g., display an error message to the user
+      }
+    }
+
+    fetchUser();
+    fetchRepos();
   }
+  , [name]);
+
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
       <main className="flex min-h-screen flex-col items-center">
-        <HeroSearch setUser={setUser}/>
-        <Profile name={name} />
+        <HeroSearch setName={setName}/>
+        {user && <Profile user={user} repos={repos!} />}
       </main>
-    </QueryClientProvider>
   );
 }

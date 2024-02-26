@@ -22,7 +22,7 @@ export default function ProfileHeader({
 
     return (
         <div id="profile-header" className="w-full flex justify-center gap-9 relative py-8">
-            <div className="bg-olive-drab p-3 rounded-2xl absolute left-0 top-[-45px]">
+            <div className="bg-olive-drab p-3 rounded-2xl absolute left-[-10px] top-[-45px]">
                 <Image
                     src={avatar_url}
                     alt="User avatar"
@@ -31,7 +31,7 @@ export default function ProfileHeader({
                     className="rounded-2xl"
                 />
             </div>
-            <div className="flex gap-5 items-center">
+            <div className="flex gap-5 items-center ml-[5%]">
                 <ProfileCard name="Location" value={location} />
                 <ProfileCard name="Followers" value={followers} />
                 <ProfileCard name="Following" value={following} />

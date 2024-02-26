@@ -1,16 +1,13 @@
 "use client";
 
 import { FormEvent } from "react";
-import { GitHubUser } from "../types";
-import { useQueryClient } from "react-query";
-import axios from "axios";
+import Image from "next/image";
 
 interface HeroSearchProps {
-    setUser: (user: GitHubUser) => void;
+  setName: (name: string) => void;
 }
 
-export default function HeroSearch({ setUser }: HeroSearchProps){
-    const queryClient = useQueryClient();
+export default function HeroSearch({ setName }: HeroSearchProps) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,29 +15,25 @@ export default function HeroSearch({ setUser }: HeroSearchProps){
     const formData = new FormData(event.currentTarget);
     const name = formData.get("name") as string;
 
-    if(!name) return;
+    if (!name) return;
 
-    try {
-      const response = await axios.get(`https://api.github.com/users/${name}`);
-      const data = response.data;
-
-      // Use React Query to cache the data
-      queryClient.setQueryData("user", data);
-
-      setUser(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      // Handle error appropriately, e.g., display an error message to the user
-    }
+    setName(name);
   }
 
   return (
     <section className="w-full bg-[url('/hero-image-github-profile.png')] h-56 flex justify-center items-center bg-center bg-cover bg-no-repeat">
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className='relative'>
+        <Image
+          src='/Search.svg'
+          alt='Search icon'
+          width={20}
+          height={20}
+          className='absolute left-3 top-3'
+        />
         <input
           type='text'
           name='name'
-          className='outline-royal-blue outline-2 border-columbia-blue border-2 bg-eerie-black text-columbia-blue h-10 w-80 rounded pl-2'
+          className='outline-royal-blue outline-2 bg-independence text-columbia-blue h-10 w-96 rounded pl-10'
         />
       </form>
     </section>
