@@ -20,8 +20,6 @@ export default function ProfileHeader({
     }
 }: ProfileHeaderProps) {
 
-    console.info("avatar_url -> ", avatar_url)
-
     return (
         <div id="profile-header" className="w-full flex justify-center gap-9 relative py-8">
             <div className="bg-olive-drab p-3 rounded-2xl absolute left-0 top-[-45px]">
