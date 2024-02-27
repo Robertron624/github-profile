@@ -22,7 +22,7 @@ export default function ProfileHeader({
 
     return (
         <div id="profile-header" className="w-full flex justify-center gap-9 relative py-8">
-            <div className="bg-olive-drab p-3 rounded-2xl absolute left-[-10px] top-[-45px]">
+            <div className="bg-olive-drab p-3 rounded-2xl -mt-24 shrink-0">
                 <Image
                     src={avatar_url}
                     alt="User avatar"
