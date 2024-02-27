@@ -9,7 +9,7 @@ interface ProfileProps {
 
 export default function Profile({ user, repos }: ProfileProps) {
   return (
-    <section id='profile-container' className='bg-olive-drab w-full pb-14'>
+    <section id='profile-container' className='bg-olive-drab w-full pb-14 px-4'>
       <div className='max-w-[1100px] mx-auto'>
         <ProfileHeader
           userMainData={{

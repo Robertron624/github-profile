@@ -31,7 +31,7 @@ export default function ProfileHeader({
                     className="rounded-2xl"
                 />
             </div>
-            <div className="flex gap-5 items-center ml-[5%]">
+            <div className="flex flex-col lg:flex-row gap-5 items-start lg:items-center lg:ml-[5%]">
                 <ProfileCard name="Location" value={location} />
                 <ProfileCard name="Followers" value={followers} />
                 <ProfileCard name="Following" value={following} />

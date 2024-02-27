@@ -88,7 +88,7 @@ export default function ProfileRepos({ userRepos }: ProfileReposProps) {
   const fourRepos = userRepos.slice(0, 4);
 
   return (
-    <div className='mt-8 grid grid-cols-2 grid-rows-2 gap-12'>
+    <div className='mt-8 grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-12'>
       {fourRepos.map((repo) => {
         const {
           name,
