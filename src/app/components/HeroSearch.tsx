@@ -1,13 +1,49 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import Image from "next/image";
+import { GitHubUser } from "../types";
+
+interface DropDownCardProps {
+  name: string;
+  avatar_url: string;
+  login: string;
+  setName: (name: string) => void;
+  setSearchedUser: (user: GitHubUser | null) => void;
+}
+
+function DropDownCard ({ name, avatar_url, login, setName, setSearchedUser }: DropDownCardProps) {
+
+
+  function handleClick() {
+    setName(login);
+    setSearchedUser(null);
+  }
+
+  return(
+    <button onClick={handleClick} className="absolute bottom-[-7rem] p-3 flex items-center gap-3 w-96 rounded-lg bg-eerie-black">
+      <Image
+        src={avatar_url}
+        alt="User avatar"
+        width={70}
+        height={70}
+        className="rounded-md shrink-0"
+      />
+      <div className="flex flex-col items-start">
+        <p className="text-xl">{name}</p>
+        <p className="text-columbia-blue text-sm">{login}</p>
+      </div>  
+    </button>
+  )
+}
 
 interface HeroSearchProps {
   setName: (name: string) => void;
 }
 
 export default function HeroSearch({ setName }: HeroSearchProps) {
+
+  const [searchedUser, setSearchedUser] = useState<GitHubUser | null>(null);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -17,11 +53,23 @@ export default function HeroSearch({ setName }: HeroSearchProps) {
 
     if (!name) return;
 
-    setName(name);
+    const response = await fetch(`https://api.github.com/users/${name}`);
+
+    if(!response.ok) {
+      setSearchedUser(null);
+      alert("User not found");
+      return;
+    }
+
+    if (response.ok) {
+      const data = await response.json();
+
+      setSearchedUser(data);
+    }
   }
 
   return (
-    <section className="w-full bg-[url('/hero-image-github-profile.png')] h-56 flex justify-center items-center bg-center bg-cover bg-no-repeat">
+    <section className="w-full bg-[url('/hero-image-github-profile.png')] h-64 flex justify-center items-start bg-center pt-14 bg-cover bg-no-repeat">
       <form onSubmit={onSubmit} className='relative'>
         <Image
           src='/Search.svg'
@@ -35,6 +83,15 @@ export default function HeroSearch({ setName }: HeroSearchProps) {
           name='name'
           className='outline-royal-blue outline-2 bg-independence text-columbia-blue h-10 w-96 rounded pl-10'
         />
+        {searchedUser && (
+          <DropDownCard
+            name={searchedUser.name}
+            avatar_url={searchedUser.avatar_url}
+            login={searchedUser.login}
+            setName={setName}
+            setSearchedUser={setSearchedUser}
+          />
+        )}
       </form>
     </section>
   );
