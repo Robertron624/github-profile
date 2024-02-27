@@ -1,8 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { toast } from "react-toastify";
 import Image from "next/image";
 import { GitHubUser } from "../types";
+import axios from "axios";
 
 interface DropDownCardProps {
   name: string;
@@ -53,18 +55,12 @@ export default function HeroSearch({ setName }: HeroSearchProps) {
 
     if (!name) return;
 
-    const response = await fetch(`https://api.github.com/users/${name}`);
-
-    if(!response.ok) {
-      setSearchedUser(null);
-      alert("User not found");
-      return;
-    }
-
-    if (response.ok) {
-      const data = await response.json();
-
-      setSearchedUser(data);
+    try {
+      const response = await axios.get(`https://api.github.com/users/${name}`);
+      setSearchedUser(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast.error("User not found");
     }
   }
 
